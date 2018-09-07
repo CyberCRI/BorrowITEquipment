@@ -6,10 +6,10 @@ The application is a Front-end web app using VueJS. These are the modules of thi
 >* "frontend" : The main application. Front-end code.
 >* "backend" : This module is usefull for future ameliorations of the FreshService responses.
 
-### Technical side
-VueJS v2.5.17
+### Dependencies
+- VueJS v2.5.17
 
-### Frontal side
+### User interface
 
 This is the main page of the application.
 
@@ -30,4 +30,4 @@ This is the main page of the application.
 
 ### How to run ?
 
-You just need to lunch npm run serve in a git terminal and you'll be ready to go !!
+You just need to lunch `npm run serve` in a terminal and you'll be ready to go !!
