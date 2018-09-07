@@ -12,10 +12,21 @@ VueJS v2.5.17
 ### Frontal side
 
 This is the main page of the application.
-![Image of Yaktocat](frontend/src/assets/app/acceuil_1.png)
-![Image of Yaktocat](frontend/src/assets/app/acceuil_2.png)
-![Image of Yaktocat](frontend/src/assets/app/acceuil_3.png)
-![Image of Yaktocat](frontend/src/assets/app/acceuil_4.png)
+
+<div style="text-align:center"><img src ="frontend/src/assets/app/acceuil_1.png" /></div>
+
+--------------------------------------------------------------------------------------------------------------------------
+
+<div style="text-align:center"><img src ="frontend/src/assets/app/acceuil_2.png" /></div>
+
+--------------------------------------------------------------------------------------------------------------------------
+
+<div style="text-align:center"><img src ="frontend/src/assets/app/acceuil_3.png" /></div>
+
+--------------------------------------------------------------------------------------------------------------------------
+
+<div style="text-align:center"><img src ="frontend/src/assets/app/acceuil_4.png" /></div>
+
 
 ### How to run ?
 
