@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<body onload="myFunction()">
+    <label for="email">Email</label>
+    <input id="email" name="email" type="email" placeholder="your@email.com">
+</body>
+<script>
+    function myFunction(){
+        //console.log(getInfosbyNFC("04EAEFE2AE4F80"))
+        //console.log(getCurrentNamebyId("128"))
+        //console.log(getItemIdbyNFC("04EAEFE2AE4F80"))
+        //console.log(getUserIDbyEmail("ariel.lindner@cri-paris.org"))
+        console.log(putItem());
+    }
+
+    function getUserEmailbyId(user_id){
+        var xhr = new XMLHttpRequest();
+
+        xhr.open("GET", "https://cri-paris.freshservice.com/itil/requesters/"+user_id+".json", false);
+        xhr.setRequestHeader('Authorization','Basic ' + btoa("CJM4CoCBi0iy4Qu7bOS"));
+        xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
+
+        xhr.send();
+
+        jsonObject_user = JSON.parse(xhr.response);
+
+        return jsonObject_user["user"]["email"]}
+    function getItemIdbyNFC(nfc_id){
+        var xhr = new XMLHttpRequest();
+
+        xhr.open("GET", "https://cri-paris.freshservice.com/cmdb/items.json", false);
+        xhr.setRequestHeader('Authorization','Basic ' + btoa("CJM4CoCBi0iy4Qu7bOS"));
+        xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
+
+        xhr.send();
+
+        jsonObject_items = JSON.parse(xhr.response);
+
+        var found = 0;
+        var i = 0;
+
+        var item_id;
+
+        while(found === 0 && i<jsonObject_items.length){
+            if(jsonObject_items[i]["levelfield_values"]["nfc_id_10000388191"] === nfc_id){
+                item_id = jsonObject_items[i]["display_id"]
+                found = 1;
+            }
+            i = i + 1;
+        }
+
+        return item_id
+
+            ;}
+    function getCurrentNamebyId(item_id){
+
+        var xhr = new XMLHttpRequest();
+
+        xhr.open("GET", "https://cri-paris.freshservice.com/cmdb/items/"+item_id+".json", false);
+        xhr.setRequestHeader('Authorization','Basic ' + btoa("CJM4CoCBi0iy4Qu7bOS"));
+        xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
+
+        xhr.send()
+
+        jsonObject = JSON.parse(xhr.response);
+
+        return jsonObject["config_item"]["name"]}
+    function getInfosbyNFC(nfc_id){
+        var xhr = new XMLHttpRequest();
+
+        xhr.open("GET", "https://cri-paris.freshservice.com/cmdb/items.json", false);
+        xhr.setRequestHeader('Authorization','Basic ' + btoa("CJM4CoCBi0iy4Qu7bOS"));
+        xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
+
+        xhr.send();
+
+        jsonObject_items = JSON.parse(xhr.response);
+
+
+        var user_email;
+        var state_name;
+        var condition;
+        var due_return_date;
+
+        var found = 0;
+        var i = 0;
+
+        while(found === 0 && i<jsonObject_items.length){
+            if(jsonObject_items[i]["levelfield_values"]["nfc_id_10000388191"] === nfc_id){
+                user_email = getUserEmailbyId(jsonObject_items[i]["user_id"]);
+                state_name = jsonObject_items[i]["state_name"];
+                condition = jsonObject_items[i]["levelfield_values"]["condition_10000388191"];
+                due_return_date = jsonObject_items[i]["levelfield_values"]["due_return_date_10000388191"];
+
+                found = 1;
+            }
+            i = i + 1;
+        }
+
+        infos = [user_email, state_name, condition, due_return_date]
+
+        return infos;}
+    function getUserIDbyEmail(user_email){
+        var xhr = new XMLHttpRequest();
+
+        xhr.open("GET", "https://cri-paris.freshservice.com/itil/requesters.json", false);
+        xhr.setRequestHeader('Authorization','Basic ' + btoa("CJM4CoCBi0iy4Qu7bOS"));
+        xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
+
+        xhr.send();
+
+        jsonObject_users = JSON.parse(xhr.response);
+
+        var found = 0;
+        var i = 0;
+
+        var user_id;
+
+
+
+        while(found === 0 && i<jsonObject_users.length){
+            if(jsonObject_users[i]["user"]["email"] === user_email){
+                user_id = jsonObject_users[i]["user"]["id"]
+                found = 1;
+            }
+            i = i + 1;
+        }
+
+        return user_id}
+    function putInfo(nfc_id, user_email, state_name, due_return_date){
+        var xhr = new XMLHttpRequest();
+
+
+        var item_id = getItemIdbyNFC(nfc_id) //128
+        var current_name = getCurrentNamebyId(item_id)
+        var user_id = getUserIDbyEmail(user_email) //"10000315365"
+
+        xhr.open("PUT", "https://cri-paris.freshservice.com/cmdb/items/"+item_id+".json", false);
+        xhr.setRequestHeader('Authorization','Basic ' + btoa("CJM4CoCBi0iy4Qu7bOS"));
+        xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
+
+        //name obligatoire -> spec de l'api
+        var data2send = '{"cmdb_config_item":{"name" : "'+current_name+'","user_id" : "'+user_id+'", "state_name":"'+state_name+'", "levelfield_attributes":{"due_return_date" : "2018-07-06T13:06:59+02:00"}}}';
+
+
+        xhr.send(data2send)
+
+        return xhr.response}
+    function putItem(){
+        var xhr = new XMLHttpRequest();
+
+        xhr.open("PUT", "https://cri-paris.freshservice.com/cmdb/items.json", false);
+        xhr.setRequestHeader('Authorization','Basic ' + btoa("CJM4CoCBi0iy4Qu7bOS"));
+        xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
+
+        //name obligatoire -> spec de l'api
+        var data2send =  '{"cmdb_config_item":{"asset_tag": "oum","assigned_on": "oum", "created_at": "2018-06-21T14:01:50+02:00","description": "oum", "name": "oum","updated_at": "2018-07-04T16:31:13+02:00","department_name": "oum","used_by": "oum","agent_name": "oum","levelfield_values": {"used_by_10000388191": "oum","acquisition_date_10000388191": "2018-06-21T14:01:50+02:00","warranty_expiry_date_10000388191": "2018-06-21T14:01:50+02:00","condition_10000388191": "Excellent ","lending_date_10000388191": "2018-06-21T14:01:50+02:00","due_return_date_10000388191": "2018-06-21T14:01:50+02:00","asset_state_10000388191": "4","last_audit_date_10000388191": "2018-06-21T14:01:50+02:00"},"ci_type_name": "Computer","product_name": "Apple laptop","vendor_name": "null","state_name": "In Stock","location_name": "Charles V"}}';
+
+        xhr.send(data2send);
+        alter(xhr.response);
+    }
+    function updateAssigned_On(){
+        var xhr = new XMLHttpRequest();
+
+
+        //var item_id = getItemIdbyNFC(nfc_id) //128
+        //var current_name = getCurrentNamebyId(item_id)
+        //var user_id = getUserIDbyEmail(user_email) //"10000315365"
+
+        xhr.open("PUT", "https://cri-paris.freshservice.com/cmdb/items/8.json", false);
+        xhr.setRequestHeader('Authorization','Basic ' + btoa("CJM4CoCBi0iy4Qu7bOS"));
+        xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
+
+        //name obligatoire -> spec de l'api
+        var data2send = '{"cmdb_config_item":{"name" : "MB 12 2016","assigned_on" : "2018-07-06T13:31:13+02:00"}}';
+
+        xhr.send(data2send)
+
+        return xhr.response
+    }
+
+</script>
