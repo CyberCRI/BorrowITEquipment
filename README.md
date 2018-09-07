@@ -13,7 +13,7 @@ VueJS v2.5.17
 
 This is the main page of the application.
 
-<div style="text-align:center"><img src ="frontend/src/assets/app/acceuil_1.png" /></div>
+<img align="center" src ="frontend/src/assets/app/acceuil_1.png" />
 
 --------------------------------------------------------------------------------------------------------------------------
 
