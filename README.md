@@ -12,10 +12,10 @@ VueJS v2.5.17
 ### Frontal side
 
 This is the main page of the application.
-![Image of Yaktocat](https://octodex.github.com/images/yaktocat.pn)
-![Image of Yaktocat](https://octodex.github.com/images/yaktocatpng)
-![Image of Yaktocat](https://octodex.github.com/images/yaktoca.png)
-![Image of Yaktocat](https://octodex.github.com/images/yaktoct.png)
+![Image of Yaktocat](frontend/src/assets/app/acceuil_1.png)
+![Image of Yaktocat](frontend/src/assets/app/acceuil_2.png)
+![Image of Yaktocat](frontend/src/assets/app/acceuil_3.png)
+![Image of Yaktocat](frontend/src/assets/app/acceuil_4.png)
 
 ### How to run ?
 
